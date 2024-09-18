@@ -1,6 +1,6 @@
 ### Updated `README.md`
 
-```md
+
 # Flock Application
 
 ## Overview
@@ -93,11 +93,11 @@ All routes use a centralized error handler to catch and respond to errors unifor
 
 ## Testing
 You can use Postman or any API testing tool to interact with the above routes.
-```
+
 
 ### `CHANGELOG.md`
 
-```md
+md
 # Changelog
 
 ## [Version 2.0] - 2024-09-18
