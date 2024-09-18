@@ -26,3 +26,45 @@ export const getUserById = async (c) => {
     return c.json({ error: "Failed to fetch user" }, 500);
   }
 };
+// Update a user by ID
+export const updateUser = async (c) => {
+  try {
+    const userId = c.req.param("id");
+    const { username, email, hashedPassword, role } = await c.req.json();
+
+    const user = await db.select().from(users).where(eq(users.id, userId));
+    if (user.length === 0) {
+      return c.json({ error: "User not found" }, 404);
+    }
+
+    const updatedUser = {
+      ...(username && { username }),
+      ...(email && { email }),
+      ...(hashedPassword && { hashedPassword }),
+      ...(role && { role }),
+    };
+
+    await db.update(users).set(updatedUser).where(eq(users.id, userId));
+    return c.json({ message: "User updated successfully" });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return c.json({ error: "Failed to update user" }, 500);
+  }
+};
+
+// Delete a user by ID
+export const deleteUser = async (c) => {
+  try {
+    const userId = c.req.param("id");
+    const user = await db.select().from(users).where(eq(users.id, userId));
+    if (user.length === 0) {
+      return c.json({ error: "User not found" }, 404);
+    }
+
+    await db.delete(users).where(eq(users.id, userId));
+    return c.json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return c.json({ error: "Failed to delete user" }, 500);
+  }
+};
